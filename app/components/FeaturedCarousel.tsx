@@ -12,7 +12,7 @@ interface FeaturedItem {
 
 const FeaturedCarousel: React.FC = () => {
   const autoplay = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ delay: 2500, stopOnInteraction: true, stopOnMouseEnter: true })
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -66,13 +66,13 @@ const FeaturedCarousel: React.FC = () => {
   }, [emblaApi]);
 
   return (
-    <section className="bg-[--primary] py-8">
+    <section className="bg-primary py-8">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Featured</h2>
-          <button className="border px-4 py-1 rounded hover:text-[--primary] transition">
-            VIEW ALL
+          <h2 className="text-2xl text-white font-bold mb-4">Featured</h2>
+          <button className="border border-white text-white cursor-pointer px-4 py-1 rounded transition">
+            View All
           </button>
         </div>
 
@@ -82,7 +82,7 @@ const FeaturedCarousel: React.FC = () => {
             {featured.map((item, i) => (
               <div
                 key={i}
-                className="min-w-[85%] sm:min-w-[45%] lg:min-w-[30%] bg-white text-[--primary] rounded-lg overflow-hidden shadow-md"
+                className="min-w-[85%] sm:min-w-[45%] lg:min-w-[30%] bg-white rounded-lg overflow-hidden shadow-md"
               >
                 <img
                   src={item.image}
@@ -96,9 +96,8 @@ const FeaturedCarousel: React.FC = () => {
                   <p className="text-sm text-gray-600 mt-2">
                     File Size: {item.size} | Language: {item.lang}
                   </p>
-                  <p className="text-sm font-semibold text-[--primary] mt-1">
-                    Date:{' '}
-                    <span className="text-[--secondary]">{item.date}</span>
+                  <p className="text-sm font-semibold mt-1">
+                    Date: <span>{item.date}</span>
                   </p>
                 </div>
               </div>
