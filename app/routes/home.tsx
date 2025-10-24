@@ -3,6 +3,7 @@ import Footer from '~/components/Footer';
 import Header from '~/components/Header';
 import Hero from '~/components/Hero';
 import Highlights from '~/components/Highlights';
+import PartnersCarousel from '~/components/PartnersCarousel';
 import QuickLinksGrid from '~/components/QuickLinksGrid';
 import type { Route } from './+types/home';
 
@@ -21,6 +22,7 @@ export default function Home() {
       <Highlights />
       <FeaturedCarousel />
       <QuickLinksGrid />
+      <PartnersCarousel />
       <Footer />
     </div>
   );
