@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Hero: React.FC = () => (
-  <section className="text-center py-10 bg-accent">
+  <section className="text-center py-15 bg-accent">
     <img
       src="/assets/logo.jpg"
       alt="Institute Logo"

@@ -9,7 +9,6 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@netlify/vite-plugin": "^2.7.6",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
     "embla-carousel-autoplay": "^8.6.0",
