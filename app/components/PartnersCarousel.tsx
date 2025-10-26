@@ -92,14 +92,14 @@ export default function PartnersCarousel() {
               <div key={i} className="flex-[0_0_25%] p-3">
                 <a
                   href={partner.link}
-                  className="flex items-center gap-4 bg-white rounded-xl shadow-md px-4 py-2 h-full justify-center"
+                  className="flex items-center gap-4 bg-white rounded-xl shadow-md px-2 py-1 h-full justify-center border border-gray-200"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <img
                     src={partner.img}
                     alt={partner.name}
-                    className="h-14 w-auto object-contain"
+                    className="h-16 w-auto object-contain"
                   />
                 </a>
               </div>
@@ -107,7 +107,6 @@ export default function PartnersCarousel() {
           </div>
         </div>
 
-        {/* Right Arrow */}
         <button
           onClick={scrollNext}
           className="absolute -right-8 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full p-2 hover:bg-blue-100"

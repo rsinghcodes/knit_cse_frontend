@@ -64,26 +64,26 @@ export const quickLinks = [
   {
     src: '/assets/icons/students.png',
     title: 'Students',
-    link: '/',
+    href: '/',
   },
   {
     src: '/assets/icons/incubations.png',
     title: 'Incubations & Startups',
-    link: '/',
+    href: '/',
   },
   {
     src: '/assets/icons/alumni.png',
     title: 'Alumni',
-    link: '/',
+    href: '/',
   },
   {
     src: '/assets/icons/gallary.png',
     title: 'Photo Gallery',
-    link: '/',
+    href: '/',
   },
   {
     src: '/assets/icons/results.png',
     title: 'Examinations & Results',
-    link: '/',
+    href: '/',
   },
 ];

@@ -1,8 +1,9 @@
+import Circulars from '~/components/Circulars';
 import FeaturedCarousel from '~/components/FeaturedCarousel';
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
 import Hero from '~/components/Hero';
-import Highlights from '~/components/Highlights';
+import HighlightsStrip from '~/components/HighlightsStrip';
 import PartnersCarousel from '~/components/PartnersCarousel';
 import QuickLinksGrid from '~/components/QuickLinksGrid';
 import type { Route } from './+types/home';
@@ -19,7 +20,8 @@ export default function Home() {
     <div className="font-sans bg-white">
       <Header />
       <Hero />
-      <Highlights />
+      <HighlightsStrip />
+      <Circulars />
       <FeaturedCarousel />
       <QuickLinksGrid />
       <PartnersCarousel />

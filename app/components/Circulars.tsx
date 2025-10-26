@@ -8,7 +8,7 @@ interface HighlightCardProps {
   image: string;
 }
 
-const HighlightCard: React.FC<HighlightCardProps> = ({
+const FacultyCard: React.FC<HighlightCardProps> = ({
   name,
   title,
   subtitle,
@@ -57,17 +57,14 @@ const CircularItem: React.FC<CircularItemProps> = ({
   </div>
 );
 
-const Highlights: React.FC = () => {
+const Circulars: React.FC = () => {
   return (
     <section className="bg-[--muted] py-8">
       <div className="container mx-auto px-4 grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7">
-          <div className="flex items-center px-4 py-2 rounded-t-md">
-            <h2 className="text-2xl font-bold mb-4">Highlights</h2>
-          </div>
           <div className="rounded-b-md p-4 grid sm:grid-cols-2 gap-4">
             {highlights.map((h, i) => (
-              <HighlightCard key={i} {...h} />
+              <FacultyCard key={i} {...h} />
             ))}
           </div>
         </div>
@@ -92,4 +89,4 @@ const Highlights: React.FC = () => {
   );
 };
 
-export default Highlights;
+export default Circulars;

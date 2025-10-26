@@ -7,9 +7,10 @@ const QuickLinksGrid: React.FC = () => (
       <h2 className="text-2xl font-bold mb-4">Quick Links</h2>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
         {quickLinks.map((link, i) => (
-          <div
+          <a
             key={i}
-            className="bg-white rounded-xl shadow-md hover:shadow-lg p-4 text-center text-sm font-medium cursor-pointer"
+            className="bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-lg p-4 text-center text-sm font-medium cursor-pointer"
+            href={link.href}
           >
             <img
               src={link.src}
@@ -17,7 +18,7 @@ const QuickLinksGrid: React.FC = () => (
               className="w-8 h-8 mx-auto mb-2"
             />
             {link.title}
-          </div>
+          </a>
         ))}
       </div>
     </div>
