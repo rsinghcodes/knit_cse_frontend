@@ -140,3 +140,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
