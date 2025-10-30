@@ -1,7 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { AlumniFormValues } from '~/components/AlumniFormModal';
 
-const ALUMNI_DB: AlumniFormValues[] = [];
+export interface Alumni {
+  id: string;
+  name: string;
+  batch: string;
+  company: string;
+  designation: string;
+  linkedin: string;
+}
+
+export let alumniData: Alumni[] = [
+  {
+    id: '1',
+    name: 'Amit Kumar',
+    batch: '2018-2022',
+    company: 'Google',
+    designation: 'Software Engineer',
+    linkedin: 'https://linkedin.com/in/amitkumar',
+  },
+];
 
 export const useAlumni = () => {
   const queryClient = useQueryClient();
@@ -9,26 +26,32 @@ export const useAlumni = () => {
   const { data: alumni = [] } = useQuery({
     queryKey: ['alumni'],
     queryFn: async () => {
-      await new Promise((res) => setTimeout(res, 300));
-      return ALUMNI_DB;
+      await new Promise((res) => setTimeout(res, 200));
+      return alumniData;
     },
   });
 
   const addAlumni = useMutation({
-    mutationFn: async (al: AlumniFormValues) => {
-      await new Promise((res) => setTimeout(res, 200));
-      ALUMNI_DB.push(al);
+    mutationFn: async (newAlumni: Omit<Alumni, 'id'>) => {
+      const added = { ...newAlumni, id: crypto.randomUUID() };
+      alumniData.push(added);
+    },
+    onSuccess: () => queryClient.invalidateQueries(['alumni']),
+  });
+
+  const updateAlumni = useMutation({
+    mutationFn: async (updated: Alumni) => {
+      alumniData = alumniData.map((a) => (a.id === updated.id ? updated : a));
     },
     onSuccess: () => queryClient.invalidateQueries(['alumni']),
   });
 
   const deleteAlumni = useMutation({
-    mutationFn: async (name: string) => {
-      const idx = ALUMNI_DB.findIndex((a) => a.name === name);
-      if (idx !== -1) ALUMNI_DB.splice(idx, 1);
+    mutationFn: async (id: string) => {
+      alumniData = alumniData.filter((a) => a.id !== id);
     },
     onSuccess: () => queryClient.invalidateQueries(['alumni']),
   });
 
-  return { alumni, addAlumni, deleteAlumni };
+  return { alumni, addAlumni, updateAlumni, deleteAlumni };
 };

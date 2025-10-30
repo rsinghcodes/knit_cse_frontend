@@ -11,6 +11,9 @@ export default [
   layout('./layout/AdminLayout.tsx', [
     route('admin/', 'routes/dashboard.tsx'),
     route('admin/students', 'routes/students.tsx'),
-    route('admin/gallery', 'routes/galleryUpload.tsx'),
+    route('admin/gallery', 'routes/gallery.tsx'),
+    route('admin/alumni', 'routes/alumni.tsx'),
+    route('admin/highlights', 'routes/highlights.tsx'),
+    route('admin/notices', 'routes/notice.tsx'),
   ]),
 ] satisfies RouteConfig;
