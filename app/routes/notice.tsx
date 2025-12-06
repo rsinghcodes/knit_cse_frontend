@@ -3,25 +3,22 @@ import { NoticeFormModal } from '~/components/NoticeFormModal';
 import { NoticeTable } from '~/components/NoticeTable';
 import { Button } from '~/components/ui/button';
 import type { Notice } from '~/utils/useNotice';
-import { noticeData } from '~/utils/useNotice';
+import { useNotice } from '~/utils/useNotice';
 
 const NoticePage = () => {
-  // const { notices, addNotice, updateNotice, deleteNotice } = useNotice();
+  const { notices, addNotice, updateNotice, deleteNotice } = useNotice();
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<Notice | null>(null);
 
   const handleAdd = (values: Omit<Notice, 'id'>) => {
-    // addNotice.mutate(values);
-    console.log(values);
+    addNotice.mutate(values);
   };
   const handleUpdate = (values: Notice) => {
-    // updateNotice.mutate(values);
-    console.log(values);
+    updateNotice.mutate(values);
   };
   const handleDelete = (id: string) => {
     if (window.confirm('Delete this notice?')) {
-      // deleteNotice.mutate(id);
-      console.log('Deleted notice with id:', id);
+      deleteNotice.mutate(id);
     }
   };
 
@@ -42,7 +39,7 @@ const NoticePage = () => {
       </div>
 
       <NoticeTable
-        notices={noticeData}
+        notices={notices}
         onEdit={(n) => {
           setEditData(n);
           setOpen(true);

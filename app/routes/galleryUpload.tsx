@@ -2,7 +2,7 @@ import { ImageIcon, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '~/components/ui/button';
 
-export const GalleryUpload = () => {
+const GalleryUpload = () => {
   const [images, setImages] = useState<File[]>([]);
   const [preview, setPreview] = useState<string[]>([]);
 
@@ -67,3 +67,5 @@ export const GalleryUpload = () => {
     </div>
   );
 };
+
+export default GalleryUpload;

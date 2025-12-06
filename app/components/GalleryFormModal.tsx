@@ -79,7 +79,7 @@ export const GalleryFormModal = ({
 
               <div>
                 <label className="block text-sm font-medium">
-                  Upload Image
+                  Upload Thumbnail
                 </label>
                 <input
                   type="file"

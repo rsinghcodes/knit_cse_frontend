@@ -3,24 +3,24 @@ import { AlumniFormModal } from '~/components/AlumniFormModal';
 import { AlumniTable } from '~/components/AlumniTable';
 import { Button } from '~/components/ui/button';
 import type { Alumni } from '~/utils/useAlumni';
-import { alumniData } from '~/utils/useAlumni';
+import { useAlumni } from '~/utils/useAlumni';
 
 const AlumniPage = () => {
-  //   const { alumni, addAlumni, updateAlumni, deleteAlumni } = useAlumni();
+  const { alumni, addAlumni, updateAlumni, deleteAlumni } = useAlumni();
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<Alumni | null>(null);
 
   const handleAdd = (values: Omit<Alumni, 'id'>) => {
-    // addAlumni.mutate(values);
+    addAlumni.mutate(values);
   };
 
   const handleUpdate = (values: Alumni) => {
-    // updateAlumni.mutate(values);
+    updateAlumni.mutate(values);
   };
 
   const handleDelete = (id: string) => {
     if (window.confirm('Delete this alumni?')) {
-      // deleteAlumni.mutate(id)
+      deleteAlumni.mutate(id);
     }
   };
 
@@ -41,7 +41,7 @@ const AlumniPage = () => {
       </div>
 
       <AlumniTable
-        alumni={alumniData}
+        alumni={alumni}
         onEdit={(a) => {
           setEditData(a);
           setOpen(true);

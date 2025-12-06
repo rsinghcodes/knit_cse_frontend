@@ -18,19 +18,19 @@ export default function Header() {
 
   return (
     <header className="w-full border-b shadow-sm bg-white">
-      <div className="w-full flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-3 relative">
+      <div className="w-full flex flex-col lg:flex-row items-center justify-between px-4 md:px-8 py-3 relative gap-4">
         <div className="flex items-center space-x-3">
           <a href="/">
             <img
               src="/assets/knit.png"
               alt="Kamla Nehru Institute of Technology, Sultanpur (U.P.)"
-              className="h-20 md:h-24 w-auto"
+              className="h-16 md:h-20 lg:h-24 w-auto"
             />
           </a>
         </div>
 
-        <div className="flex justify-around flex-col gap-4">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-4 w-full lg:w-auto items-center lg:items-end">
+          <div className="flex items-center gap-3 flex-wrap justify-center">
             <a href="https://knit.ac.in/" title="Home">
               <Home className="text-[#153D6A] w-5 h-5" />
             </a>
@@ -84,16 +84,16 @@ export default function Header() {
             </div>
           )}
 
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-center lg:justify-end gap-4">
             <img
               src="/assets/kumbh2025.jpg"
               alt="Maha Kumbh 2025"
-              className="h-12 w-auto"
+              className="h-10 md:h-12 w-auto"
             />
             <img
               src="/assets/kakori.jpg"
               alt="Kakori Train Action Shatabdi Mahotsav"
-              className="h-12 w-auto"
+              className="h-10 md:h-12 w-auto"
             />
           </div>
         </div>

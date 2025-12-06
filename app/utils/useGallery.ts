@@ -11,10 +11,17 @@ export interface GalleryItem {
 export let galleryData: GalleryItem[] = [
   {
     id: '1',
-    title: 'Annual Fest 2024',
-    category: 'Event',
+    title: 'Tvaran Fest 2024',
+    category: 'Sport Event',
     imageUrl: 'https://placehold.co/300x200',
     createdAt: '2025-10-22',
+  },
+  {
+    id: '2',
+    title: 'Hack-O-Gravity 2025',
+    category: 'Hackathon',
+    imageUrl: 'https://placehold.co/300x200',
+    createdAt: '2025-07-15',
   },
 ];
 

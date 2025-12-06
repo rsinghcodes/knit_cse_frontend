@@ -62,7 +62,7 @@ const Circulars: React.FC = () => {
     <section className="bg-[--muted] py-8">
       <div className="container mx-auto px-4 grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7">
-          <div className="rounded-b-md p-4 grid sm:grid-cols-2 gap-4">
+          <div className="rounded-b-md p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {highlights.map((h, i) => (
               <FacultyCard key={i} {...h} />
             ))}

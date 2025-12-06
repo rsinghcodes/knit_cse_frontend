@@ -89,7 +89,10 @@ export default function PartnersCarousel() {
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
             {partners.map((partner, i) => (
-              <div key={i} className="flex-[0_0_25%] p-3">
+              <div
+                key={i}
+                className="flex-[0_0_50%] sm:flex-[0_0_33.33%] md:flex-[0_0_25%] p-3"
+              >
                 <a
                   href={partner.link}
                   className="flex items-center gap-4 bg-white rounded-xl shadow-md px-2 py-1 h-full justify-center border border-gray-200"
@@ -99,7 +102,7 @@ export default function PartnersCarousel() {
                   <img
                     src={partner.img}
                     alt={partner.name}
-                    className="h-16 w-auto object-contain"
+                    className="h-12 md:h-16 w-auto object-contain"
                   />
                 </a>
               </div>

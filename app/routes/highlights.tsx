@@ -3,26 +3,23 @@ import { HighlightFormModal } from '~/components/HighlightFormModal';
 import { HighlightsTable } from '~/components/HighlightsTable';
 import { Button } from '~/components/ui/button';
 import type { Highlight } from '~/utils/useHighlights';
-import { highlightsData } from '~/utils/useHighlights';
+import { useHighlights } from '~/utils/useHighlights';
 
 const HighlightsPage = () => {
-  // const { highlights, addHighlight, updateHighlight, deleteHighlight } =
-  //   useHighlights();
+  const { highlights, addHighlight, updateHighlight, deleteHighlight } =
+    useHighlights();
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<Highlight | null>(null);
 
   const handleAdd = (data: Omit<Highlight, 'id' | 'createdAt'>) => {
-    // addHighlight.mutate(data);
-    console.log(data);
+    addHighlight.mutate(data);
   };
   const handleUpdate = (data: Highlight) => {
-    // updateHighlight.mutate(data);
-    console.log(data);
+    updateHighlight.mutate(data);
   };
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this highlight?')) {
-      // deleteHighlight.mutate(id);
-      console.log('Deleted highlight with id:', id);
+      deleteHighlight.mutate(id);
     }
   };
 
@@ -43,7 +40,7 @@ const HighlightsPage = () => {
       </div>
 
       <HighlightsTable
-        highlights={highlightsData}
+        highlights={highlights}
         onEdit={(h) => {
           setEditData(h);
           setOpen(true);

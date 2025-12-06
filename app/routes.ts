@@ -7,7 +7,7 @@ import {
 
 export default [
   index('routes/home.tsx'),
-  route('/admin', 'routes/adminLogin.tsx'),
+  route('/login', 'routes/adminLogin.tsx'),
   layout('./layout/AdminLayout.tsx', [
     route('admin/', 'routes/dashboard.tsx'),
     route('admin/students', 'routes/students.tsx'),
@@ -15,5 +15,6 @@ export default [
     route('admin/alumni', 'routes/alumni.tsx'),
     route('admin/highlights', 'routes/highlights.tsx'),
     route('admin/notices', 'routes/notice.tsx'),
+    route('admin/gallery-upload', 'routes/galleryUpload.tsx'),
   ]),
 ] satisfies RouteConfig;

@@ -3,25 +3,22 @@ import { GalleryFormModal } from '~/components/GalleryFormModal';
 import { GalleryGrid } from '~/components/GalleryGrid';
 import { Button } from '~/components/ui/button';
 import type { GalleryItem } from '~/utils/useGallery';
-import { galleryData } from '~/utils/useGallery';
+import { useGallery } from '~/utils/useGallery';
 
 const GalleryPage = () => {
-  // const { photos, addPhoto, updatePhoto, deletePhoto } = useGallery();
+  const { photos, addPhoto, updatePhoto, deletePhoto } = useGallery();
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<GalleryItem | null>(null);
 
   const handleAdd = (data: Omit<GalleryItem, 'id' | 'createdAt'>) => {
-    console.log(data);
-    // addPhoto.mutate(data);
+    addPhoto.mutate(data);
   };
   const handleUpdate = (data: GalleryItem) => {
-    // updatePhoto.mutate(data);
-    console.log(data);
+    updatePhoto.mutate(data);
   };
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this photo?'))
-      // deletePhoto.mutate(id);
-      console.log('Deleted photo with id:', id);
+      deletePhoto.mutate(id);
   };
 
   return (
@@ -41,7 +38,7 @@ const GalleryPage = () => {
       </div>
 
       <GalleryGrid
-        photos={galleryData}
+        photos={photos}
         onEdit={(p) => {
           setEditData(p);
           setOpen(true);

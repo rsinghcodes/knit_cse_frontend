@@ -1,7 +1,32 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { StudentFormValues } from '~/components/StudentFormModal';
 
-const FAKE_DB: StudentFormValues[] = [];
+const FAKE_DB: StudentFormValues[] = [
+  {
+    name: 'John Doe',
+    rollNumber: '12345',
+    year: '3rd',
+    course: 'B.Tech',
+    department: 'Computer Science',
+    email: 'john.doe@knit.ac.in',
+  },
+  {
+    name: 'Jane Smith',
+    rollNumber: '12346',
+    year: '2nd',
+    course: 'B.Tech',
+    department: 'Computer Science',
+    email: 'jane.smith@knit.ac.in',
+  },
+  {
+    name: 'Linda Johnson',
+    rollNumber: '12347',
+    year: '2nd',
+    course: 'MCA',
+    department: 'Computer Science',
+    email: 'linda.johnson@knit.ac.in',
+  },
+];
 
 export const useStudents = () => {
   const queryClient = useQueryClient();
