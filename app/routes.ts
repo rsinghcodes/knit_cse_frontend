@@ -17,4 +17,7 @@ export default [
     route('admin/notices', 'routes/notice.tsx'),
     route('admin/gallery-upload', 'routes/galleryUpload.tsx'),
   ]),
+  route('/faculty', 'routes/faculty.tsx'),
+  route('/photo-gallery', 'routes/photo-gallery.tsx'),
+  route('/photo-gallery/:eventId', 'routes/photo-gallery.$eventId.tsx'),
 ] satisfies RouteConfig;
