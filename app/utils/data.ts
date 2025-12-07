@@ -69,12 +69,12 @@ export const quickLinks = [
   {
     src: '/assets/icons/incubations.png',
     title: 'Courses Offered',
-    href: '/',
+    href: '/courses',
   },
   {
     src: '/assets/icons/alumni.png',
     title: 'Alumni',
-    href: '/',
+    href: '/our-alumni',
   },
   {
     src: '/assets/icons/gallary.png',
@@ -402,5 +402,96 @@ export const galleryEvents: GalleryEvent[] = [
         caption: 'Group photo at tech park',
       },
     ],
+  },
+];
+
+export interface Course {
+  id: string;
+  name: string;
+  degree: string;
+  duration: string;
+  intake: string;
+  eligibility: string[];
+  highlights: string[];
+  curriculum: string;
+  careerProspects: string[];
+  fees?: string;
+}
+
+export const courses: Course[] = [
+  {
+    id: 'btech-cse',
+    name: 'Bachelor of Technology in Computer Science & Engineering',
+    degree: 'B.Tech CSE',
+    duration: '4 Years (8 Semesters)',
+    intake: '120 Seats',
+    eligibility: [
+      'Passed 10+2 examination with Physics and Mathematics as compulsory subjects',
+      'Obtained at least 45% marks (40% for reserved category) in the above subjects',
+      'Qualified in JEE Main or equivalent entrance examination',
+      'Age limit as per AICTE norms',
+    ],
+    highlights: [
+      'AICTE approved program',
+      'State-of-the-art computer labs',
+      'Industry-oriented curriculum',
+      'Experienced faculty members',
+      'Strong industry collaborations',
+      'Placement assistance with top companies',
+      'Research opportunities',
+      'Hackathons and coding competitions',
+    ],
+    curriculum:
+      'The program is structured into 8 semesters covering core subjects like Programming, Data Structures, Algorithms, Database Management, Operating Systems, Computer Networks, Software Engineering, Artificial Intelligence, Machine Learning, and Web Technologies. Students also work on live projects and internships.',
+    careerProspects: [
+      'Software Engineer/Developer',
+      'Data Scientist',
+      'Machine Learning Engineer',
+      'Full Stack Developer',
+      'DevOps Engineer',
+      'Cloud Architect',
+      'Cybersecurity Analyst',
+      'Database Administrator',
+      'System Analyst',
+      'IT Consultant',
+    ],
+    fees: 'As per government norms',
+  },
+  {
+    id: 'mca',
+    name: 'Master of Computer Applications',
+    degree: 'MCA',
+    duration: '2 Years (4 Semesters)',
+    intake: '60 Seats',
+    eligibility: [
+      'Bachelor\'s degree in any discipline with Mathematics at 10+2 level or at Graduation level',
+      'Minimum 50% marks in qualifying examination (45% for reserved category)',
+      'Valid score in entrance examination (NIMCET/State level)',
+    ],
+    highlights: [
+      'AICTE approved program',
+      'Advanced curriculum in software development',
+      'Focus on latest technologies',
+      'Industry-ready training',
+      'Project-based learning',
+      'Excellent placement record',
+      'Internship opportunities',
+      'Skill development workshops',
+    ],
+    curriculum:
+      'The 2-year MCA program covers advanced topics in Computer Science including Advanced Programming, Software Engineering, Database Systems, Web Technologies, Cloud Computing, Mobile Application Development, Data Analytics, and Cybersecurity. Includes major project work and industry internship.',
+    careerProspects: [
+      'Software Developer',
+      'Application Developer',
+      'Web Developer',
+      'Mobile App Developer',
+      'Database Administrator',
+      'System Analyst',
+      'Network Administrator',
+      'IT Project Manager',
+      'Business Analyst',
+      'Quality Assurance Engineer',
+    ],
+    fees: 'As per government norms',
   },
 ];
