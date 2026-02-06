@@ -11,19 +11,23 @@ import {
   X,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useSiteSettingsContext } from '~/context/SiteSettingsContext';
 
 export default function Header() {
+  const { settings } = useSiteSettingsContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const primaryColor = settings.theme.colors.primary;
+
   return (
-    <header className="w-full border-b shadow-sm bg-white">
+    <header className="w-full border-b shadow-sm" style={{ background: settings.theme.colors.background }}>
       <div className="w-full flex flex-col lg:flex-row items-center justify-between px-4 md:px-8 py-3 relative gap-4">
         <div className="flex items-center space-x-3">
           <a href="/">
             <img
-              src="/assets/knit.png"
-              alt="Kamla Nehru Institute of Technology, Sultanpur (U.P.)"
+              src={settings.branding.logo}
+              alt={settings.branding.siteName}
               className="h-16 md:h-20 lg:h-24 w-auto"
             />
           </a>
@@ -32,32 +36,32 @@ export default function Header() {
         <div className="flex flex-col gap-4 w-full lg:w-auto items-center lg:items-end">
           <div className="flex items-center gap-3 flex-wrap justify-center">
             <a href="https://knit.ac.in/" title="Home">
-              <Home className="text-[#153D6A] w-5 h-5" />
+              <Home className="w-5 h-5" style={{ color: primaryColor }} />
             </a>
             <a
               href="https://knit.ac.in/#main-content"
               title="Skip to Main Content"
             >
-              <ThumbsUp className="text-[#153D6A] w-5 h-5" />
+              <ThumbsUp className="w-5 h-5" style={{ color: primaryColor }} />
             </a>
             <a
               href="https://knit.ac.in/en/article/screen-reader-access"
               title="Screen Reader Access"
             >
-              <Accessibility className="text-[#153D6A] w-5 h-5" />
+              <Accessibility className="w-5 h-5" style={{ color: primaryColor }} />
             </a>
             <a href="https://knit.ac.in/en/article/sitemap" title="Feed">
-              <Rss className="text-[#153D6A] w-5 h-5" />
+              <Rss className="w-5 h-5" style={{ color: primaryColor }} />
             </a>
             <a href="https://knit.ac.in/hi" title="Hindi Version">
-              <Globe className="text-[#153D6A] w-5 h-5" />
+              <Globe className="w-5 h-5" style={{ color: primaryColor }} />
             </a>
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               title="Search"
               className="cursor-pointer"
             >
-              <Search className="text-[#153D6A] w-5 h-5" />
+              <Search className="w-5 h-5" style={{ color: primaryColor }} />
             </button>
           </div>
 
@@ -77,7 +81,7 @@ export default function Header() {
                   placeholder="Search here..."
                   className="border rounded-md px-2 py-1 w-full text-sm"
                 />
-                <button className="bg-[#153D6A] text-white text-xs px-3 py-1 rounded">
+                <button className="text-white text-xs px-3 py-1 rounded" style={{ background: primaryColor }}>
                   Submit
                 </button>
               </div>
@@ -98,7 +102,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <nav className="bg-[#153D6A] text-white">
+      <nav className="text-white" style={{ background: primaryColor }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-2">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -108,20 +112,18 @@ export default function Header() {
           </button>
 
           <ul
-            className={`flex-col md:flex-row md:flex md:space-x-6 absolute md:static top-full left-0 w-full md:w-auto bg-[#153D6A] transition-all duration-300 ${isMenuOpen ? 'flex' : 'hidden'
+            className={`flex-col md:flex-row md:flex md:space-x-6 absolute md:static top-full left-0 w-full md:w-auto transition-all duration-300 ${isMenuOpen ? 'flex' : 'hidden'
               }`}
+            style={{ background: primaryColor }}
           >
-            {[
-              { label: 'Academics', href: '#' },
-              { label: 'Departments', href: '#' },
-              { label: 'Faculty', href: '/faculty' },
-              { label: 'Photo Gallery', href: '/photo-gallery' },
-              { label: 'Training & Placements', href: '#' },
-              { label: 'Media', href: '#' },
-              { label: 'Contact Us', href: '#' },
-            ].map((item) => (
-              <li key={item.label} className="px-4 py-1.5 md:px-1 rounded-md">
-                <a href={item.href} className="block font-medium">
+            {settings.content.navigation.map((item) => (
+              <li key={item.id} className="px-4 py-1.5 md:px-1 rounded-md">
+                <a
+                  href={item.href}
+                  className="block font-medium"
+                  target={item.external ? '_blank' : undefined}
+                  rel={item.external ? 'noopener noreferrer' : undefined}
+                >
                   {item.label}
                 </a>
               </li>

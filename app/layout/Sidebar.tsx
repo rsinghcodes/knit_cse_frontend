@@ -5,16 +5,20 @@ import {
   Newspaper,
   Star,
   Users,
+  Settings,
+  FileText,
 } from 'lucide-react';
 import { NavLink } from 'react-router';
 
 const sidebarItems = [
   { name: 'Dashboard', icon: LayoutDashboard, to: '/admin' },
+  { name: 'Pages', icon: FileText, to: '/admin/pages' },
   { name: 'Students', icon: Users, to: '/admin/students' },
   { name: 'Alumni', icon: Users, to: '/admin/alumni' },
   { name: 'Photo Gallery', icon: ImageIcon, to: '/admin/gallery' },
   { name: 'Notices', icon: Newspaper, to: '/admin/notices' },
   { name: 'Highlights', icon: Star, to: '/admin/highlights' },
+  { name: 'Site Settings', icon: Settings, to: '/admin/site-settings' },
 ];
 
 export default function Sidebar() {
