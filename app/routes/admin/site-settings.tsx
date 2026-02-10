@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useSiteSettingsContext } from '~/context/SiteSettingsContext';
 import { ThemeCustomizer } from '~/components/admin/ThemeCustomizer';
 import { BrandingCustomizer } from '~/components/admin/BrandingCustomizer';
+import { HeaderCustomizer } from '~/components/admin/HeaderCustomizer';
+import { FooterCustomizer } from '~/components/admin/FooterCustomizer';
 import { LayoutCustomizer } from '~/components/admin/LayoutCustomizer';
 import { ContentCustomizer } from '~/components/admin/ContentCustomizer';
 import { CustomStylesEditor } from '~/components/admin/CustomStylesEditor';
@@ -19,7 +21,7 @@ import {
     CheckCircle,
 } from 'lucide-react';
 
-type TabId = 'theme' | 'branding' | 'layout' | 'content' | 'custom';
+type TabId = 'theme' | 'branding' | 'header' | 'footer' | 'layout' | 'content' | 'custom';
 
 export default function SiteSettings() {
     const {
@@ -36,6 +38,8 @@ export default function SiteSettings() {
     const tabs = [
         { id: 'theme' as TabId, label: 'Theme', icon: Palette },
         { id: 'branding' as TabId, label: 'Branding', icon: Image },
+        { id: 'header' as TabId, label: 'Header', icon: Layout },
+        { id: 'footer' as TabId, label: 'Footer', icon: Layout },
         { id: 'layout' as TabId, label: 'Layout', icon: Layout },
         { id: 'content' as TabId, label: 'Content', icon: FileText },
         { id: 'custom' as TabId, label: 'Custom CSS', icon: Code },
@@ -165,8 +169,8 @@ export default function SiteSettings() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
-                                            ? 'text-blue-600 border-b-2 border-blue-600'
-                                            : 'text-gray-600 hover:text-gray-900'
+                                        ? 'text-blue-600 border-b-2 border-blue-600'
+                                        : 'text-gray-600 hover:text-gray-900'
                                         }`}
                                 >
                                     <Icon className="w-5 h-5" />
@@ -183,6 +187,8 @@ export default function SiteSettings() {
                 <div className="bg-white rounded-lg shadow-sm border p-6 md:p-8">
                     {activeTab === 'theme' && <ThemeCustomizer />}
                     {activeTab === 'branding' && <BrandingCustomizer />}
+                    {activeTab === 'header' && <HeaderCustomizer />}
+                    {activeTab === 'footer' && <FooterCustomizer />}
                     {activeTab === 'layout' && <LayoutCustomizer />}
                     {activeTab === 'content' && <ContentCustomizer />}
                     {activeTab === 'custom' && <CustomStylesEditor />}
