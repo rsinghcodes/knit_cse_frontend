@@ -3,6 +3,12 @@ import { HeroBlock } from './blocks/HeroBlock';
 import { TextBlock } from './blocks/TextBlock';
 import { ImageBlock } from './blocks/ImageBlock';
 import { CardGridBlock } from './blocks/CardGridBlock';
+import { FacultyGridBlock } from './blocks/FacultyGridBlock';
+import { CourseListBlock } from './blocks/CourseListBlock';
+import { AlumniGridBlock } from './blocks/AlumniGridBlock';
+import { StatsBlock } from './blocks/StatsBlock';
+import { AccordionBlock } from './blocks/AccordionBlock';
+import { QuoteBlock } from './blocks/QuoteBlock';
 
 interface BlockRendererProps {
     block: ContentBlock;
@@ -34,6 +40,24 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ block }) => {
             case 'cards':
                 return <CardGridBlock content={content} />;
 
+            case 'faculty-grid':
+                return <FacultyGridBlock content={content} />;
+
+            case 'course-list':
+                return <CourseListBlock content={content} />;
+
+            case 'alumni-grid':
+                return <AlumniGridBlock content={content} />;
+
+            case 'stats':
+                return <StatsBlock content={content} />;
+
+            case 'accordion':
+                return <AccordionBlock content={content} />;
+
+            case 'quote':
+                return <QuoteBlock content={content} />;
+
             case 'html':
                 return (
                     <div
@@ -52,6 +76,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ block }) => {
                 );
         }
     };
+
 
     return (
         <div className={blockClassName} style={blockStyles}>

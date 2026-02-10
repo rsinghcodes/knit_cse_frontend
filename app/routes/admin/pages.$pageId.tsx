@@ -10,6 +10,9 @@ import {
     GripVertical,
 } from 'lucide-react';
 import type { Page, ContentBlock, BlockType, PageStatus, PageTemplate } from '~/types/cms';
+import { StatsBlockEditor } from '~/components/cms/editors/StatsBlockEditor';
+import { AccordionBlockEditor } from '~/components/cms/editors/AccordionBlockEditor';
+import { QuoteBlockEditor } from '~/components/cms/editors/QuoteBlockEditor';
 
 export default function PageEditor() {
     const { pageId } = useParams();
@@ -292,6 +295,42 @@ export default function PageEditor() {
                                     >
                                         + Custom HTML
                                     </button>
+                                    <button
+                                        onClick={() => handleAddBlock('faculty-grid')}
+                                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+                                    >
+                                        + Faculty Grid
+                                    </button>
+                                    <button
+                                        onClick={() => handleAddBlock('course-list')}
+                                        className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm"
+                                    >
+                                        + Course List
+                                    </button>
+                                    <button
+                                        onClick={() => handleAddBlock('alumni-grid')}
+                                        className="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors text-sm"
+                                    >
+                                        + Alumni Grid
+                                    </button>
+                                    <button
+                                        onClick={() => handleAddBlock('stats')}
+                                        className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                                    >
+                                        + Stats/Counter
+                                    </button>
+                                    <button
+                                        onClick={() => handleAddBlock('accordion')}
+                                        className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors text-sm"
+                                    >
+                                        + Accordion/FAQ
+                                    </button>
+                                    <button
+                                        onClick={() => handleAddBlock('quote')}
+                                        className="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors text-sm"
+                                    >
+                                        + Quote/Testimonial
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -415,6 +454,27 @@ const BlockEditor: React.FC<BlockEditorProps> = ({ block, onUpdate, onDelete }) 
                         className="w-full px-3 py-2 border rounded font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 );
+            case 'stats':
+                return (
+                    <StatsBlockEditor
+                        content={block.content}
+                        onChange={(newContent) => onUpdate({ content: newContent })}
+                    />
+                );
+            case 'accordion':
+                return (
+                    <AccordionBlockEditor
+                        content={block.content}
+                        onChange={(newContent) => onUpdate({ content: newContent })}
+                    />
+                );
+            case 'quote':
+                return (
+                    <QuoteBlockEditor
+                        content={block.content}
+                        onChange={(newContent) => onUpdate({ content: newContent })}
+                    />
+                );
             default:
                 return <p className="text-gray-500 text-sm">Block editor not implemented</p>;
         }
@@ -490,6 +550,134 @@ function getDefaultBlockContent(type: BlockType): Record<string, any> {
         case 'html':
             return {
                 html: '',
+            };
+        case 'faculty-grid':
+            return {
+                title: 'Our Faculty',
+                department: '',
+                members: [],
+                columns: 3,
+                showEmail: true,
+                showPhone: false,
+            };
+        case 'course-list':
+            return {
+                title: 'Courses',
+                courses: [],
+                showCredits: true,
+                showSemester: true,
+                collapsible: false,
+            };
+        case 'alumni-grid':
+            return {
+                title: 'Our Alumni',
+                profiles: [],
+                columns: 3,
+                showCompany: true,
+                showTestimonial: true,
+            };
+        case 'stats':
+            return {
+                title: 'By the Numbers',
+                stats: [
+                    {
+                        id: 'stat-1',
+                        value: '100',
+                        suffix: '%',
+                        label: 'Placement Rate',
+                        description: 'Students placed in top companies',
+                        icon: 'trending-up',
+                        order: 0,
+                    },
+                    {
+                        id: 'stat-2',
+                        value: '500',
+                        suffix: '+',
+                        label: 'Alumni Network',
+                        description: 'Successful graduates worldwide',
+                        icon: 'users',
+                        order: 1,
+                    },
+                    {
+                        id: 'stat-3',
+                        value: '25',
+                        suffix: '+',
+                        label: 'Industry Partners',
+                        icon: 'award',
+                        order: 2,
+                    },
+                ],
+                columns: 3,
+                backgroundColor: '#f9fafb',
+                animateOnScroll: true,
+            };
+        case 'accordion':
+            return {
+                title: 'Frequently Asked Questions',
+                items: [
+                    {
+                        id: 'faq-1',
+                        question: 'What is the admission process?',
+                        answer: 'The admission process includes filling out an application form, submitting required documents, and appearing for an entrance exam. Selected candidates will be invited for counseling.',
+                        order: 0,
+                        defaultOpen: true,
+                    },
+                    {
+                        id: 'faq-2',
+                        question: 'What are the eligibility criteria?',
+                        answer: 'Candidates must have passed 10+2 with Mathematics and Physics as compulsory subjects along with Chemistry/Computer Science/Biology. A minimum of 60% marks is required.',
+                        order: 1,
+                        defaultOpen: false,
+                    },
+                    {
+                        id: 'faq-3',
+                        question: 'What is the course duration?',
+                        answer: 'The B.Tech program is 4 years (8 semesters) and the MCA program is 2 years (4 semesters).',
+                        order: 2,
+                        defaultOpen: false,
+                    },
+                    {
+                        id: 'faq-4',
+                        question: 'Are scholarships available?',
+                        answer: 'Yes, we offer merit-based scholarships and financial assistance to deserving students. Please visit the admission office for more details.',
+                        order: 3,
+                        defaultOpen: false,
+                    },
+                ],
+                allowMultiple: false,
+                searchable: true,
+            };
+        case 'quote':
+            return {
+                quotes: [
+                    {
+                        id: 'quote-1',
+                        text: 'The faculty and infrastructure at KNIT CSE Department are exceptional. The industry-oriented curriculum helped me land my dream job at Google.',
+                        author: 'Rahul Sharma',
+                        authorTitle: 'Software Engineer at Google, Batch 2020',
+                        rating: 5,
+                        order: 0,
+                    },
+                    {
+                        id: 'quote-2',
+                        text: 'I am grateful for the mentorship and guidance I received during my time here. The coding culture and competitive programming environment prepared me well for the industry.',
+                        author: 'Priya Singh',
+                        authorTitle: 'SDE at Amazon, Batch 2021',
+                        rating: 5,
+                        order: 1,
+                    },
+                    {
+                        id: 'quote-3',
+                        text: 'Best decision of my academic career. The department focuses on both theoretical knowledge and practical implementation, which is crucial for success.',
+                        author: 'Amit Kumar',
+                        authorTitle: 'Data Scientist at Microsoft, Batch 2019',
+                        rating: 5,
+                        order: 2,
+                    },
+                ],
+                layout: 'card',
+                showCarousel: false,
+                backgroundColor: '#f9fafb',
             };
         default:
             return {};
