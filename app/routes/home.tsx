@@ -6,29 +6,25 @@ import Hero from '~/components/Hero';
 import HighlightsStrip from '~/components/HighlightsStrip';
 import PartnersCarousel from '~/components/PartnersCarousel';
 import QuickLinksGrid from '~/components/QuickLinksGrid';
-import { useSiteSettingsContext } from '~/context/SiteSettingsContext';
 import type { Route } from './+types/home';
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: 'New React Router App' },
-    { name: 'description', content: 'Welcome to React Router!' },
+    { title: 'KNIT CSE Department' },
+    { name: 'description', content: 'Department of Computer Science & Engineering, KNIT Sultanpur' },
   ];
 }
 
 export default function Home() {
-  const { settings } = useSiteSettingsContext();
-  const { sectionVisibility } = settings.layout;
-
   return (
     <div className="font-sans bg-white">
       <Header />
-      {sectionVisibility.hero && <Hero />}
-      {sectionVisibility.highlights && <HighlightsStrip />}
-      {sectionVisibility.circulars && <Circulars />}
-      {sectionVisibility.featuredCarousel && <FeaturedCarousel />}
-      {sectionVisibility.quickLinks && <QuickLinksGrid />}
-      {sectionVisibility.partnersCarousel && <PartnersCarousel />}
+      <Hero />
+      <HighlightsStrip />
+      <Circulars />
+      <FeaturedCarousel />
+      <QuickLinksGrid />
+      <PartnersCarousel />
       <Footer />
     </div>
   );

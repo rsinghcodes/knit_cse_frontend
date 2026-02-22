@@ -35,21 +35,21 @@ export const useNotice = () => {
       const added = { ...newNotice, id: crypto.randomUUID() };
       noticeData.push(added);
     },
-    onSuccess: () => queryClient.invalidateQueries(['notices']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notices'] }),
   });
 
   const updateNotice = useMutation({
     mutationFn: async (updated: Notice) => {
       noticeData = noticeData.map((n) => (n.id === updated.id ? updated : n));
     },
-    onSuccess: () => queryClient.invalidateQueries(['notices']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notices'] }),
   });
 
   const deleteNotice = useMutation({
     mutationFn: async (id: string) => {
       noticeData = noticeData.filter((n) => n.id !== id);
     },
-    onSuccess: () => queryClient.invalidateQueries(['notices']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notices'] }),
   });
 
   return { notices, addNotice, updateNotice, deleteNotice };

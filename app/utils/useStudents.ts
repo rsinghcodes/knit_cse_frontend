@@ -1,5 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { StudentFormValues } from '~/components/StudentFormModal';
+
+export interface StudentFormValues {
+  name: string;
+  rollNumber: string;
+  year: string;
+  course: string;
+  department: string;
+  email: string;
+}
 
 const FAKE_DB: StudentFormValues[] = [
   {

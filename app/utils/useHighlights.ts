@@ -42,21 +42,21 @@ export const useHighlights = () => {
       };
       highlightsData.push(newItem);
     },
-    onSuccess: () => queryClient.invalidateQueries(['highlights']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['highlights'] }),
   });
 
   const updateHighlight = useMutation({
     mutationFn: async (data: Highlight) => {
       highlightsData = highlightsData.map((h) => (h.id === data.id ? data : h));
     },
-    onSuccess: () => queryClient.invalidateQueries(['highlights']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['highlights'] }),
   });
 
   const deleteHighlight = useMutation({
     mutationFn: async (id: string) => {
       highlightsData = highlightsData.filter((h) => h.id !== id);
     },
-    onSuccess: () => queryClient.invalidateQueries(['highlights']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['highlights'] }),
   });
 
   return { highlights, addHighlight, updateHighlight, deleteHighlight };
