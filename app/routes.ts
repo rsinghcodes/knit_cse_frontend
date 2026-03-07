@@ -12,4 +12,5 @@ export default [
   route('/our-alumni', 'routes/our-alumni.tsx'),
   route('/courses', 'routes/courses.tsx'),
   route('/pages/:slug', 'routes/pages.$slug.tsx'),
+  route('/admin-login', 'routes/admin-login.tsx'),
 ] satisfies RouteConfig;
