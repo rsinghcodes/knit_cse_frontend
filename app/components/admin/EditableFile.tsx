@@ -38,17 +38,7 @@ export default function EditableFile({
     };
 
     if (!isEditMode) {
-        if (!currentFileUrl) return null;
-        return (
-            <a
-                href={currentFileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 underline"
-            >
-                <FileText size={13} /> {label}
-            </a>
-        );
+        return null;
     }
 
     return (

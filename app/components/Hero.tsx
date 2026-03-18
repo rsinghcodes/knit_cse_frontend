@@ -31,12 +31,12 @@ const Hero: React.FC = () => {
       )}
 
       {/* Logo */}
-      <div className="flex justify-center mb-4">
+      <div className="mx-auto w-24 h-24 md:w-32 md:h-32 mb-4">
         <EditableImage
           src={hero.logo || '/logo.png'}
           alt="Institute Logo"
           onSave={uploadLogo}
-          className="w-24 h-24 md:w-32 md:h-32 object-contain"
+          className="w-full h-full object-contain"
         />
       </div>
 

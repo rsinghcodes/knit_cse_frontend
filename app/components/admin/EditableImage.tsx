@@ -51,7 +51,7 @@ export default function EditableImage({
     const displaySrc = preview || src;
 
     return (
-        <div className="relative inline-block">
+        <div className="relative w-full h-full">
             {displaySrc ? (
                 <img src={displaySrc} alt={alt} className={className} />
             ) : (

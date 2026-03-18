@@ -53,12 +53,12 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
             )}
 
             {/* Faculty Photo */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-gray-100 h-64">
+            <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-gray-100 aspect-[4/5] sm:aspect-[3/4] xl:aspect-[4/5]">
                 <EditableImage
                     src={faculty.photo_url || faculty.photo}
                     alt={faculty.name}
                     onSave={(file) => onUploadPhoto(faculty.id, file)}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     fallback={
                         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100">
                             <User size={48} className="text-gray-300" />
