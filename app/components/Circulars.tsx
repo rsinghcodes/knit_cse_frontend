@@ -121,7 +121,7 @@ const CircularItem: React.FC<CircularItemProps> = ({
 
   return (
     <div className="relative flex space-x-3 border-b border-slate-300 pb-3 mb-3 group/item">
-      <div className="shrink-0 bg-[--primary] w-10 h-10 flex items-center justify-center rounded-full shadow-sm">
+      <div className="shrink-0 bg-[#153D6A] w-10 h-10 flex items-center justify-center rounded-full shadow-sm">
         <FileText size={18} className="text-white" />
       </div>
       <div className="flex-1 min-w-0">
@@ -129,14 +129,14 @@ const CircularItem: React.FC<CircularItemProps> = ({
           tag="h3"
           value={title}
           onSave={(v) => onUpdate(id, 'title', v)}
-          className="font-semibold text-[--foreground] text-sm leading-snug"
+          className="font-semibold text-gray-900 text-sm leading-snug"
         />
         <div className="flex flex-wrap gap-x-3 mt-1">
           <EditableText
             tag="span"
             value={date}
             onSave={(v) => onUpdate(id, 'date', v)}
-            className="text-xs font-semibold text-[--secondary]"
+            className="text-xs font-semibold text-gray-600"
             placeholder="DD/MM/YYYY"
           />
         </div>
@@ -154,7 +154,7 @@ const CircularItem: React.FC<CircularItemProps> = ({
             href={fileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-[--primary] hover:text-[#0b284b] bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md transition-colors"
+            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-[#153D6A] hover:text-[#0b284b] bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md transition-colors"
           >
             <FileText size={14} />
             Download Circular
@@ -198,7 +198,6 @@ const Circulars: React.FC = () => {
   const { isEditMode } = useEditMode();
   const { circulars, addCircular, updateCircular, deleteCircular } = useCircularApi();
   const { notices, addNotice, updateNotice, deleteNotice } = useNoticeApi();
-  const { faculty, isLoading: facultyLoading, addFaculty, updateFaculty, deleteFaculty } = useFacultyApi();
 
   /* ── handlers ── */
   const handleUpdateCircular = async (id: number, field: string, value: string) => {
@@ -240,33 +239,8 @@ const Circulars: React.FC = () => {
     });
   };
 
-  /* ── faculty handlers ── */
-  const handleUpdateFacultyField = async (id: number, field: string, value: string) => {
-    await updateFaculty.mutateAsync({ id, payload: { [field]: value } });
-  };
-  const handleUploadPhoto = async (id: number, file: File) => {
-    const fd = new FormData();
-    fd.append('photo', file);
-    await updateFaculty.mutateAsync({ id, payload: fd });
-  };
-  const handleUploadCv = async (id: number, file: File) => {
-    const fd = new FormData();
-    fd.append('cv', file);
-    await updateFaculty.mutateAsync({ id, payload: fd });
-  };
-  const handleDeleteFaculty = async (id: number) => {
-    await deleteFaculty.mutateAsync(id);
-  };
-  const handleAddFaculty = () => {
-    const fd = new FormData();
-    fd.append('name', 'New Faculty');
-    fd.append('designation', 'Professor');
-    fd.append('department', 'CSE');
-    addFaculty.mutate(fd);
-  };
-
   return (
-    <section className="bg-[--muted] py-10">
+    <section className="bg-gray-50 py-10">
       <div className="container mx-auto px-4">
 
         {/* ── Row 1: Notices (left) + Circulars (right) ── */}
@@ -300,7 +274,7 @@ const Circulars: React.FC = () => {
 
           {/* Circulars */}
           <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-[--primary] mb-4 flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-[#153D6A] mb-4 flex items-center gap-2">
               <FileText size={22} />
               Circulars
             </h2>
@@ -325,31 +299,6 @@ const Circulars: React.FC = () => {
             </div>
             <AddItemButton label="Add Circular" onClick={handleAddCircular} />
           </div>
-        </div>
-
-        {/* ── Row 2: Faculty ── */}
-        <div>
-          <h2 className="text-2xl font-bold text-[--primary] mb-6 flex items-center gap-2">
-            <User size={22} />
-            Our Faculty
-          </h2>
-          {facultyLoading ? (
-            <p className="text-gray-400 text-center py-8">Loading faculty...</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {faculty.map((f) => (
-                <FacultyCard
-                  key={f.id}
-                  faculty={f}
-                  onUpdateField={handleUpdateFacultyField}
-                  onUploadPhoto={handleUploadPhoto}
-                  onUploadCv={handleUploadCv}
-                  onDelete={handleDeleteFaculty}
-                />
-              ))}
-            </div>
-          )}
-          <AddItemButton label="Add Faculty" onClick={handleAddFaculty} />
         </div>
 
       </div>

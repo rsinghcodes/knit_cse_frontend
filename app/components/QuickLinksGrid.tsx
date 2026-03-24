@@ -4,7 +4,7 @@ import { useEditMode } from '~/context/EditModeContext';
 import EditableText from '~/components/admin/EditableText';
 import EditableImage from '~/components/admin/EditableImage';
 import ConfirmDialog from '~/components/admin/ConfirmDialog';
-import { Trash2, Plus, X } from 'lucide-react';
+import { Trash2, Plus, X, Link as LinkIcon } from 'lucide-react';
 
 const QuickLinksGrid: React.FC = () => {
   const { quicklinks, isLoading, addQuickLink, updateQuickLink, deleteQuickLink } = useQuickLinksApi();
@@ -87,12 +87,28 @@ const QuickLinksGrid: React.FC = () => {
               )}
 
               <div className="w-12 h-12 mx-auto mb-2 relative">
-                <EditableImage
-                  src={link.icon_url || link.icon || '/assets/icons/default.png'}
-                  alt={link.title}
-                  onSave={(file) => handleUploadIcon(link.id, file)}
-                  className="w-full h-full object-contain"
-                />
+                {link.icon_url || link.icon ? (
+                  <EditableImage
+                    src={link.icon_url || link.icon}
+                    alt={link.title}
+                    onSave={(file) => handleUploadIcon(link.id, file)}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-[#153D6A]">
+                    <LinkIcon size={24} />
+                    {isEditMode && (
+                      <div className="absolute inset-0">
+                         <EditableImage
+                           src={null}
+                           alt={link.title}
+                           onSave={(file) => handleUploadIcon(link.id, file)}
+                           className="w-full h-full opacity-0 hover:opacity-100 transition-opacity"
+                         />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {isEditMode ? (

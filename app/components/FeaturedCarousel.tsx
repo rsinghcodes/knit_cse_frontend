@@ -206,7 +206,7 @@ const FeaturedCarousel: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b border-transparent pb-2">
           <div className="flex items-center gap-3">
-            <h2 className="text-3xl text-white font-serif font-bold">Featured</h2>
+            <h2 className="text-3xl text-white font-bold">Featured</h2>
             {isEditMode && (
               <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded shadow mt-1">
                 ✏️ Editing Featured

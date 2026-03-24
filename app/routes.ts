@@ -11,6 +11,9 @@ export default [
   route('/photo-gallery/:eventId', 'routes/photo-gallery.$eventId.tsx'),
   route('/our-alumni', 'routes/our-alumni.tsx'),
   route('/courses', 'routes/courses.tsx'),
+  route('/staff', 'routes/staff.tsx'),
+  route('/students', 'routes/students.tsx'),
+  route('/contact-us', 'routes/contact-us.tsx'),
   route('/pages/:slug', 'routes/pages.$slug.tsx'),
   route('/admin-login', 'routes/admin-login.tsx'),
 ] satisfies RouteConfig;

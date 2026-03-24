@@ -3,6 +3,8 @@ import FeaturedCarousel from '~/components/FeaturedCarousel';
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
 import Hero from '~/components/Hero';
+import AlumniCarousel from '~/components/AlumniCarousel';
+import AboutDepartmentSection from '~/components/AboutDepartmentSection';
 import HighlightsStrip from '~/components/HighlightsStrip';
 import PartnersCarousel from '~/components/PartnersCarousel';
 import QuickLinksGrid from '~/components/QuickLinksGrid';
@@ -20,6 +22,8 @@ export default function Home() {
     <div className="font-sans bg-white">
       <Header />
       <Hero />
+      <AlumniCarousel />
+      <AboutDepartmentSection />
       <HighlightsStrip />
       <Circulars />
       <FeaturedCarousel />
