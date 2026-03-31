@@ -1,8 +1,10 @@
 'use client';
 
 import {
-    Award, BookOpen, Briefcase, ChevronDown, ChevronUp, Clock, GraduationCap, Users, Plus, Trash2, X, Check
+    Award, BookOpen, Briefcase, ChevronDown, ChevronUp, Clock, GraduationCap, Users, Plus, Trash2, X, Check, CalendarDays, Calendar, FileText, Upload
 } from 'lucide-react';
+import { useRef } from 'react';
+import { useCoursesApi } from '~/utils/api/useCoursesApi';
 import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import type { ApiCourse } from '~/utils/api/useCoursesApi';
@@ -16,7 +18,7 @@ interface CourseCardProps {
     onDelete: (id: number) => Promise<void>;
 }
 
-type TabType = 'highlights' | 'eligibility' | 'curriculum' | 'career';
+type TabType = 'highlights' | 'schedules' | 'curriculum' | 'career';
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, onUpdateField, onDelete }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -25,8 +27,21 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onUpdateField, onDelete
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     // UI state for adding new items to JSON arrays
+
     const [newItemText, setNewItemText] = useState('');
     const [showAddItem, setShowAddItem] = useState<TabType | null>(null);
+
+    const { uploadFile, deleteFile, uploadBrochure, deleteBrochure } = useCoursesApi();
+    const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+
+    const handleFileUpload = async (type: 'timetable' | 'syllabus', year: string, file: File) => {
+        await uploadFile.mutateAsync({ type, courseId: course.id, year, file });
+    };
+
+    const handleDeleteFile = async (type: 'timetable' | 'syllabus', id: number) => {
+        await deleteFile.mutateAsync({ type, id });
+    };
+
 
     const handleUpdateArray = async (field: 'highlights' | 'eligibility' | 'career_prospects', newArray: string[]) => {
         await onUpdateField(course.id, field, newArray);
@@ -126,7 +141,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onUpdateField, onDelete
                     <div className="flex border-b overflow-x-auto bg-gray-50/50">
                         {[
                             { key: 'highlights', label: 'Highlights', icon: Award },
-                            { key: 'eligibility', label: 'Eligibility', icon: GraduationCap },
+                            { key: 'schedules', label: 'Schedules', icon: CalendarDays },
                             { key: 'curriculum', label: 'Curriculum', icon: BookOpen },
                             { key: 'career', label: 'Career Paths', icon: Briefcase },
                         ].map(({ key, label, icon: Icon }) => (
@@ -196,53 +211,98 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onUpdateField, onDelete
                             </div>
                         )}
 
-                        {activeTab === 'eligibility' && (
-                            <div className="space-y-4">
-                                <ul className="space-y-3">
-                                    {(course.eligibility || []).map((item, index) => (
-                                        <li key={index} className="flex items-start gap-3 text-gray-700 group">
-                                            <span className="text-green-600 mt-1 shrink-0 bg-green-50 p-1 rounded-full"><Check size={14} /></span>
-                                            <div className="flex-1">
-                                                <EditableText
-                                                    tag="p"
-                                                    value={item}
-                                                    onSave={(v) => handleEditItemInArray('eligibility', index, v)}
-                                                    className="text-sm font-medium leading-relaxed"
-                                                />
+                        {activeTab === 'schedules' && (
+                            <div className="space-y-6">
+                                {(() => {
+                                    const durationMatch = course.duration.match(/\d+/);
+                                    const yearsCount = durationMatch ? parseInt(durationMatch[0], 10) : 4;
+                                    return Array.from({ length: yearsCount }, (_, i) => i + 1);
+                                })().map(yearNum => {
+                                    const yearStr = `Year ${yearNum}`;
+                                    const timetable = course.timetables?.find(t => t.year === yearStr);
+                                    const syllabus = course.syllabuses?.find(s => s.year === yearStr);
+                                    
+                                    return (
+                                        <div key={yearNum} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <h4 className="font-bold text-[#153D6A] mb-3 text-lg">{yearStr}</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {/* Timetable Section */}
+                                                <div className="flex flex-col gap-2 p-3 bg-white rounded border border-gray-100 shadow-sm">
+                                                    <span className="text-sm font-semibold flex items-center gap-2"><Calendar size={16} className="text-blue-500" /> Timetable</span>
+                                                    {timetable ? (
+                                                        <div className="flex items-center justify-between">
+                                                            <a href={timetable.file_url} target="_blank" rel="noreferrer" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                                                                <FileText size={14} /> View File
+                                                            </a>
+                                                            {isEditMode && (
+                                                                <button onClick={() => handleDeleteFile('timetable', timetable.id)} className="text-red-500 hover:text-red-700 p-1">
+                                                                    <Trash2 size={16} />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="text-sm text-gray-400 italic">Not uploaded</div>
+                                                    )}
+                                                    {isEditMode && !timetable && (
+                                                        <div className="mt-2">
+                                                            <input 
+                                                                type="file" 
+                                                                accept="application/pdf"
+                                                                className="hidden" 
+                                                                ref={el => { fileInputRefs.current[`tt_${yearStr}`] = el; }}
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files?.[0];
+                                                                    if (file) handleFileUpload('timetable', yearStr, file);
+                                                                    e.target.value = '';
+                                                                }}
+                                                            />
+                                                            <Button variant="outline" size="sm" onClick={() => fileInputRefs.current[`tt_${yearStr}`]?.click()} className="w-full text-xs h-8">
+                                                                <Upload size={14} className="mr-1" /> Upload
+                                                            </Button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                
+                                                {/* Syllabus Section */}
+                                                <div className="flex flex-col gap-2 p-3 bg-white rounded border border-gray-100 shadow-sm">
+                                                    <span className="text-sm font-semibold flex items-center gap-2"><BookOpen size={16} className="text-green-500" /> Syllabus</span>
+                                                    {syllabus ? (
+                                                        <div className="flex items-center justify-between">
+                                                            <a href={syllabus.file_url} target="_blank" rel="noreferrer" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                                                                <FileText size={14} /> View File
+                                                            </a>
+                                                            {isEditMode && (
+                                                                <button onClick={() => handleDeleteFile('syllabus', syllabus.id)} className="text-red-500 hover:text-red-700 p-1">
+                                                                    <Trash2 size={16} />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="text-sm text-gray-400 italic">Not uploaded</div>
+                                                    )}
+                                                    {isEditMode && !syllabus && (
+                                                        <div className="mt-2">
+                                                            <input 
+                                                                type="file" 
+                                                                accept="application/pdf"
+                                                                className="hidden" 
+                                                                ref={el => { fileInputRefs.current[`syl_${yearStr}`] = el; }}
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files?.[0];
+                                                                    if (file) handleFileUpload('syllabus', yearStr, file);
+                                                                    e.target.value = '';
+                                                                }}
+                                                            />
+                                                            <Button variant="outline" size="sm" onClick={() => fileInputRefs.current[`syl_${yearStr}`]?.click()} className="w-full text-xs h-8 text-green-700 border-green-200 hover:bg-green-50">
+                                                                <Upload size={14} className="mr-1" /> Upload
+                                                            </Button>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                            {isEditMode && (
-                                                <button onClick={() => handleRemoveItemFromArray('eligibility', index)} className="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity p-1">
-                                                    <X size={16} />
-                                                </button>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                                {isEditMode && (
-                                    <div className="pt-2">
-                                        {showAddItem === 'eligibility' ? (
-                                            <div className="flex gap-2 items-center bg-blue-50 p-2 rounded-md border border-blue-200">
-                                                <input
-                                                    autoFocus
-                                                    value={newItemText}
-                                                    onChange={e => setNewItemText(e.target.value)}
-                                                    className="flex-1 border rounded px-2 py-1.5 text-sm"
-                                                    placeholder="New eligibility criteria..."
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter') handleAddItemToArray('eligibility');
-                                                        if (e.key === 'Escape') { setShowAddItem(null); setNewItemText(''); }
-                                                    }}
-                                                />
-                                                <button onClick={() => handleAddItemToArray('eligibility')} className="bg-green-600 text-white p-1.5 rounded"><Check size={16} /></button>
-                                                <button onClick={() => { setShowAddItem(null); setNewItemText(''); }} className="bg-gray-400 text-white p-1.5 rounded"><X size={16} /></button>
-                                            </div>
-                                        ) : (
-                                            <button onClick={() => setShowAddItem('eligibility')} className="text-[#153D6A] text-sm font-semibold flex items-center gap-1 hover:text-blue-800">
-                                                <Plus size={14} /> Add Eligibility Criteria
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
+                                        </div>
+                                    );
+                                })}
                             </div>
                         )}
 
@@ -319,13 +379,50 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onUpdateField, onDelete
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="p-6 pt-0 flex gap-4 mt-2">
-                        <Button className="flex-1 bg-gradient-to-r from-[#153D6A] to-[#1a4a7f] hover:from-[#1a4a7f] hover:to-[#225b9c] text-white shadow-md font-bold py-5 text-base rounded-xl transition-all hover:shadow-lg hover:-translate-y-0.5">
-                            Apply for {course.degree}
-                        </Button>
-                        <Button variant="outline" className="flex-1 border-2 border-[#153D6A] text-[#153D6A] hover:bg-blue-50 font-bold py-5 text-base rounded-xl transition-all">
-                            Download Brochure
-                        </Button>
+                    <div className="p-6 pt-0 mt-2 space-y-3">
+                        {course.brochure_url ? (
+                            <div className="flex gap-4">
+                                <Button variant="outline" className="flex-1 border-2 border-[#153D6A] text-[#153D6A] hover:bg-blue-50 font-bold py-5 text-base rounded-xl transition-all" asChild>
+                                    <a href={course.brochure_url} target="_blank" rel="noreferrer">
+                                        Download Brochure
+                                    </a>
+                                </Button>
+                                {isEditMode && (
+                                    <Button variant="destructive" onClick={() => deleteBrochure.mutateAsync(course.id)} className="border-2 font-bold py-5 text-base rounded-xl flex items-center justify-center">
+                                        <Trash2 size={18} />
+                                    </Button>
+                                )}
+                            </div>
+                        ) : (
+                            <>
+                                {isEditMode ? (
+                                    <div className="flex items-center gap-4">
+                                        <input
+                                            type="file"
+                                            accept="application/pdf"
+                                            className="hidden"
+                                            ref={el => { fileInputRefs.current.brochure = el; }}
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) uploadBrochure.mutateAsync({ id: course.id, file });
+                                                e.target.value = '';
+                                            }}
+                                        />
+                                        <Button 
+                                            variant="outline" 
+                                            className="w-full border-2 border-green-600 text-green-700 hover:bg-green-50 font-bold py-5 text-base rounded-xl transition-all border-dashed"
+                                            onClick={() => fileInputRefs.current.brochure?.click()}
+                                        >
+                                            <Upload size={18} className="mr-2" /> Upload Brochure PDF
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <div className="text-sm text-gray-400 italic text-center p-3 border rounded border-gray-100 bg-gray-50">
+                                        Brochure updating soon
+                                    </div>
+                                )}
+                            </>
+                        )}
                     </div>
                 </div>
             )}

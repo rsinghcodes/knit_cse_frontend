@@ -1,6 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '~/lib/api';
 
+export interface CourseFile {
+    id: number;
+    year: string;
+    file_url: string;
+    created_at: string;
+}
+
 export interface ApiCourse {
     id: number;
     name: string;
@@ -14,6 +21,10 @@ export interface ApiCourse {
     career_prospects: string[];
     order: number;
     is_active: boolean;
+    brochure_url?: string;
+    brochure?: string | null;
+    timetables?: CourseFile[];
+    syllabuses?: CourseFile[];
 }
 
 export const useCoursesApi = () => {
@@ -50,5 +61,46 @@ export const useCoursesApi = () => {
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }),
     });
 
-    return { courses, isLoading, addCourse, updateCourse, deleteCourse };
+    const uploadFile = useMutation({
+        mutationFn: async ({ type, courseId, year, file }: { type: 'timetable'|'syllabus', courseId: number, year: string, file: File }) => {
+            const formData = new FormData();
+            formData.append('course', courseId.toString());
+            formData.append('year', year);
+            formData.append('file', file);
+            const endpoint = type === 'timetable' ? '/api/course-timetables/' : '/api/course-syllabuses/';
+            const res = await api.post(endpoint, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            return res.data;
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }),
+    });
+
+    const deleteFile = useMutation({
+        mutationFn: async ({ type, id }: { type: 'timetable'|'syllabus', id: number }) => {
+            const endpoint = type === 'timetable' ? `/api/course-timetables/${id}/` : `/api/course-syllabuses/${id}/`;
+            await api.delete(endpoint);
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }),
+    });
+
+    const uploadBrochure = useMutation({
+        mutationFn: async ({ id, file }: { id: number; file: File }) => {
+            const formData = new FormData();
+            formData.append('brochure', file);
+            const res = await api.patch(`/api/courses/${id}/`, formData);
+            return res.data;
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }),
+    });
+
+    const deleteBrochure = useMutation({
+        mutationFn: async (id: number) => {
+            const formData = new FormData();
+            formData.append('brochure', '');
+            const res = await api.patch(`/api/courses/${id}/`, formData);
+            return res.data;
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }),
+    });
+
+    return { courses, isLoading, addCourse, updateCourse, deleteCourse, uploadFile, deleteFile, uploadBrochure, deleteBrochure };
 };

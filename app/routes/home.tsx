@@ -22,9 +22,9 @@ export default function Home() {
     <div className="font-sans bg-white">
       <Header />
       <Hero />
+      <HighlightsStrip />
       <AlumniCarousel />
       <AboutDepartmentSection />
-      <HighlightsStrip />
       <Circulars />
       <FeaturedCarousel />
       <QuickLinksGrid />
