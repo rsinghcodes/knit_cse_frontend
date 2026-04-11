@@ -19,14 +19,22 @@ export default function Header() {
   return (
     <header className="w-full bg-white shadow sticky top-0 z-50">
       <div className="w-full flex items-center justify-between px-4 md:px-8 py-3">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3 min-w-0">
           <img
-            src="/logo.png"
-            alt="KNIT CSE"
-            className="h-12 w-auto"
+            src="/assets/logo.jpg"
+            alt="KNIT Logo"
+            className="h-12 w-12 md:h-14 md:w-14 rounded-full object-cover flex-shrink-0"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
-          <span className="font-bold text-lg text-[#153D6A] tracking-wider">KNIT CSE</span>
+          <div className="hidden sm:flex flex-col leading-tight min-w-0">
+            <span className="font-bold text-base md:text-lg text-[#153D6A] tracking-wide" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+              Department of Computer Science &amp; Engineering
+            </span>
+            <span className="text-xs md:text-sm text-[#8B1A1A] font-semibold tracking-wide" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+              Kamla Nehru Institute of Technology, Sultanpur
+            </span>
+          </div>
+          <span className="sm:hidden font-bold text-sm text-[#153D6A] tracking-wide">KNIT CSE</span>
         </Link>
 
         <button
