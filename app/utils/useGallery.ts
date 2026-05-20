@@ -45,21 +45,21 @@ export const useGallery = () => {
       };
       galleryData.push(newItem);
     },
-    onSuccess: () => queryClient.invalidateQueries(['gallery']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gallery'] }),
   });
 
   const updatePhoto = useMutation({
     mutationFn: async (updated: GalleryItem) => {
       galleryData = galleryData.map((p) => (p.id === updated.id ? updated : p));
     },
-    onSuccess: () => queryClient.invalidateQueries(['gallery']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gallery'] }),
   });
 
   const deletePhoto = useMutation({
     mutationFn: async (id: string) => {
       galleryData = galleryData.filter((p) => p.id !== id);
     },
-    onSuccess: () => queryClient.invalidateQueries(['gallery']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gallery'] }),
   });
 
   return { photos, addPhoto, updatePhoto, deletePhoto };

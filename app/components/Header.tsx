@@ -1,176 +1,130 @@
-'use client';
-
-import {
-  Accessibility,
-  Globe,
-  Home,
-  Menu,
-  Rss,
-  Search,
-  ThumbsUp,
-  X,
-} from 'lucide-react';
+import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import { useSiteSettingsContext } from '~/context/SiteSettingsContext';
-import { useHeaderSettings } from '~/utils/useHeaderSettings';
+import { useCoursesApi, type ApiCourse } from '~/utils/api/useCoursesApi';
+import { Link, useLocation } from 'react-router';
 
 export default function Header() {
-  const { settings: siteSettings } = useSiteSettingsContext();
-  const { settings: headerSettings } = useHeaderSettings();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { courses } = useCoursesApi();
+  const location = useLocation();
 
-  // Icon component mapping
-  const getIconComponent = (iconType: string) => {
-    const iconMap: Record<string, React.FC<{ className?: string; style?: React.CSSProperties }>> = {
-      home: Home,
-      skip: ThumbsUp,
-      accessibility: Accessibility,
-      rss: Rss,
-      globe: Globe,
-      search: Search,
-    };
-    return iconMap[iconType] || Home;
-  };
-
-  const headerStyle: React.CSSProperties = {
-    background: headerSettings.layout.transparent ? 'transparent' : headerSettings.style.backgroundColor,
-    borderBottom: `${headerSettings.style.borderWidth} solid ${headerSettings.style.borderColor}`,
-    boxShadow: headerSettings.style.shadow ? '0 1px 3px 0 rgba(0, 0, 0, 0.1)' : 'none',
-    position: headerSettings.layout.sticky ? 'sticky' : 'relative',
-    top: headerSettings.layout.sticky ? 0 : 'auto',
-    zIndex: headerSettings.layout.sticky ? 50 : 'auto',
+  const handleDropdownClick = (menu: string, e: React.MouseEvent) => {
+    if (window.innerWidth < 768) {
+      e.preventDefault();
+      setOpenDropdown(openDropdown === menu ? null : menu);
+    }
   };
 
   return (
-    <header className="w-full" style={headerStyle}>
-      <div className="w-full flex flex-col lg:flex-row items-center justify-between px-4 md:px-8 py-3 relative gap-4">
-        <div className="flex items-center space-x-3">
-          <a href={headerSettings.logo.link}>
-            <img
-              src={headerSettings.logo.src}
-              alt={headerSettings.logo.alt}
-              style={{ height: headerSettings.logo.height }}
-              className="w-auto"
-            />
-          </a>
-        </div>
+    <header className="w-full bg-white shadow sticky top-0 z-50">
+      <div className="w-full flex items-center justify-between px-4 md:px-8 py-3">
+        <Link to="/" className="flex items-center gap-3 min-w-0">
+          <img
+            src="/assets/logo.jpg"
+            alt="KNIT Logo"
+            className="h-12 w-12 md:h-14 md:w-14 rounded-full object-cover flex-shrink-0"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+          <div className="hidden sm:flex flex-col leading-tight min-w-0">
+            <span className="font-bold text-base md:text-lg text-[#153D6A] tracking-wide" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+              Department of Computer Science &amp; Engineering
+            </span>
+            <span className="text-xs md:text-sm text-[#8B1A1A] font-semibold tracking-wide" style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+              Kamla Nehru Institute of Technology, Sultanpur
+            </span>
+          </div>
+          <span className="sm:hidden font-bold text-sm text-[#153D6A] tracking-wide">KNIT CSE</span>
+        </Link>
 
-        <div className="flex flex-col gap-4 w-full lg:w-auto items-center lg:items-end">
-          <div className="flex items-center gap-3 flex-wrap justify-center">
-            {headerSettings.topBarIcons
-              .filter((icon) => icon.visible)
-              .sort((a, b) => a.order - b.order)
-              .map((icon) => {
-                const IconComponent = getIconComponent(icon.icon);
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden focus:outline-none text-gray-700"
+        >
+          {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
 
-                if (icon.icon === 'search') {
-                  return headerSettings.search.enabled ? (
-                    <button
-                      key={icon.id}
-                      onClick={() => setIsSearchOpen(!isSearchOpen)}
-                      title={icon.label}
-                      className="cursor-pointer"
-                    >
-                      <IconComponent
-                        className="w-5 h-5"
-                        style={{ color: siteSettings.theme.colors.primary }}
-                      />
-                    </button>
-                  ) : null;
-                }
+        <nav className="hidden md:flex items-center gap-7">
+          <Link to="/" className={`font-medium hover:text-[#153D6A] transition-colors ${location.pathname === '/' ? 'text-[#153D6A]' : 'text-gray-700'}`}>Home</Link>
+          
+          {/* People Dropdown */}
+          <div className="relative group cursor-pointer inline-flex h-full py-2">
+            <Link to="#" className={`flex items-center gap-1 font-medium hover:text-[#153D6A] transition-colors ${['/faculty', '/staff', '/students'].includes(location.pathname) ? 'text-[#153D6A]' : 'text-gray-700'}`} onClick={e => e.preventDefault()}>
+              People <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+            </Link>
+            
+            <div className="absolute top-full mt-2 left-0 w-52 bg-white shadow-xl rounded-lg py-2 border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-left -translate-y-2 group-hover:translate-y-0">
+              
+              {/* Students Cascading */}
+              <div className="relative group/sub">
+                <Link to="/students" className="w-full px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#153D6A] flex items-center justify-between transition-colors font-medium">
+                  Students <ChevronRight size={14} className="text-gray-400 group-hover/sub:text-[#153D6A]" />
+                </Link>
+                {/* Courses sub-menu */}
+                <div className="absolute top-0 mt-0 left-[95%] w-60 bg-white shadow-xl rounded-lg py-2 border border-gray-100 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible group-hover/sub:translate-x-2 transition-all duration-200 -translate-x-2 before:absolute before:-left-2 before:top-0 before:w-2 before:h-full">
+                  {courses.length > 0 ? courses.map((c: ApiCourse) => (
+                    <Link key={c.id} to={`/students?course=${c.id}`} className="block px-5 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#153D6A] transition-colors font-medium">
+                      {c.name} ({c.degree})
+                    </Link>
+                  )) : (
+                    <div className="px-5 py-2.5 text-sm text-gray-400 italic">No courses found</div>
+                  )}
+                </div>
+              </div>
 
-                return (
-                  <a key={icon.id} href={icon.href} title={icon.label}>
-                    <IconComponent
-                      className="w-5 h-5"
-                      style={{ color: siteSettings.theme.colors.primary }}
-                    />
-                  </a>
-                );
-              })}
+              <Link to="/faculty" className="block px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#153D6A] transition-colors">Faculty</Link>
+              <Link to="/staff" className="block px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#153D6A] transition-colors">Staff</Link>
+            </div>
           </div>
 
-          {isSearchOpen && headerSettings.search.enabled && (
-            <div className="absolute top-full right-4 bg-white border shadow-md p-4 rounded-md mt-2 z-50 w-64">
-              <div className="flex justify-between items-center">
-                <h4 className="font-semibold text-gray-800 text-sm">
-                  Site Search
-                </h4>
-                <button onClick={() => setIsSearchOpen(false)}>
-                  <X className="w-4 h-4 text-gray-500" />
-                </button>
-              </div>
-              <div className="mt-2 flex items-center space-x-2">
-                <input
-                  type="text"
-                  placeholder={headerSettings.search.placeholder}
-                  className="border rounded-md px-2 py-1 w-full text-sm"
-                />
-                <button
-                  className="text-white text-xs px-3 py-1 rounded"
-                  style={{ background: siteSettings.theme.colors.primary }}
-                >
-                  {headerSettings.search.submitText}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {headerSettings.banners.filter((b) => b.visible).length > 0 && (
-            <div className="flex justify-center lg:justify-end gap-4">
-              {headerSettings.banners
-                .filter((banner) => banner.visible)
-                .sort((a, b) => a.order - b.order)
-                .map((banner) => (
-                  <img
-                    key={banner.id}
-                    src={banner.src}
-                    alt={banner.alt}
-                    className="h-10 md:h-12 w-auto"
-                  />
-                ))}
-            </div>
-          )}
-        </div>
+          <Link to="/courses" className={`font-medium hover:text-[#153D6A] transition-colors ${location.pathname === '/courses' ? 'text-[#153D6A]' : 'text-gray-700'}`}>Courses</Link>
+          <Link to="/photo-gallery" className={`font-medium hover:text-[#153D6A] transition-colors ${location.pathname.startsWith('/photo-gallery') ? 'text-[#153D6A]' : 'text-gray-700'}`}>Photo Gallery</Link>
+          <Link to="/our-alumni" className={`font-medium hover:text-[#153D6A] transition-colors ${location.pathname === '/our-alumni' ? 'text-[#153D6A]' : 'text-gray-700'}`}>Our Alumni</Link>
+          <Link to="/contact-us" className={`font-medium hover:text-[#153D6A] transition-colors ${location.pathname === '/contact-us' ? 'text-[#153D6A]' : 'text-gray-700'}`}>Contact Us</Link>
+        </nav>
       </div>
-      <nav
-        className="text-white"
-        style={{
-          background: headerSettings.style.navBackgroundColor,
-          color: headerSettings.style.navTextColor,
-        }}
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-2">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden focus:outline-none"
-            style={{ color: headerSettings.style.navTextColor }}
-          >
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
 
-          <ul
-            className={`flex-col md:flex-row md:flex md:space-x-6 absolute md:static top-full left-0 w-full md:w-auto transition-all duration-300 ${isMenuOpen ? 'flex' : 'hidden'
-              }`}
-            style={{ background: headerSettings.style.navBackgroundColor }}
-          >
-            {siteSettings.content.navigation.map((item) => (
-              <li key={item.id} className="px-4 py-1.5 md:px-1 rounded-md">
-                <a
-                  href={item.href}
-                  className="block font-medium"
-                  style={{ color: headerSettings.style.navTextColor }}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <nav className="md:hidden bg-white border-t px-4 py-3 shadow-inner max-h-[80vh] overflow-y-auto">
+          <div className="flex flex-col space-y-1">
+            <Link to="/" onClick={() => setIsMenuOpen(false)} className="block py-3 px-2 text-gray-800 font-bold border-b border-gray-50">Home</Link>
+            
+            {/* People Mobile Accordion */}
+            <div className="border-b border-gray-50">
+              <button onClick={(e) => handleDropdownClick('people', e)} className="w-full flex items-center justify-between py-3 px-2 text-gray-800 font-bold">
+                People <ChevronDown size={18} className={`transition-transform text-gray-500 ${openDropdown === 'people' || openDropdown === 'students' ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {(openDropdown === 'people' || openDropdown === 'students') && (
+                <div className="pl-3 pb-2 pt-1 bg-gray-50 rounded-lg shrink-0 mb-2">
+                  <div className="border-b border-gray-200">
+                     <button onClick={(e) => handleDropdownClick('students', e)} className="w-full flex items-center justify-between py-3 px-3 text-gray-700 font-semibold">
+                      Students <ChevronDown size={16} className={`transition-transform text-gray-400 ${openDropdown === 'students' ? 'rotate-180' : ''}`} />
+                     </button>
+                     {openDropdown === 'students' && (
+                       <div className="pl-4 pb-3 pt-1 border-l-[3px] border-[#153D6A]/30 ml-4 space-y-1">
+                         {courses.map((c: ApiCourse) => (
+                           <Link key={c.id} to={`/students?course=${c.id}`} onClick={() => setIsMenuOpen(false)} className="block py-2.5 px-3 text-[13px] font-medium text-gray-600 hover:text-[#153D6A] hover:bg-white rounded-lg">
+                             {c.name}
+                           </Link>
+                         ))}
+                       </div>
+                     )}
+                  </div>
+                  <Link to="/faculty" onClick={() => setIsMenuOpen(false)} className="block py-3 px-3 text-gray-700 font-semibold border-b border-gray-200">Faculty</Link>
+                  <Link to="/staff" onClick={() => setIsMenuOpen(false)} className="block py-3 px-3 text-gray-700 font-semibold">Staff</Link>
+                </div>
+              )}
+            </div>
+
+            <Link to="/courses" onClick={() => setIsMenuOpen(false)} className="block py-3 px-2 text-gray-800 font-bold border-b border-gray-50">Courses</Link>
+            <Link to="/photo-gallery" onClick={() => setIsMenuOpen(false)} className="block py-3 px-2 text-gray-800 font-bold border-b border-gray-50">Photo Gallery</Link>
+            <Link to="/our-alumni" onClick={() => setIsMenuOpen(false)} className="block py-3 px-2 text-gray-800 font-bold border-b border-gray-50">Our Alumni</Link>
+            <Link to="/contact-us" onClick={() => setIsMenuOpen(false)} className="block py-3 px-2 text-gray-800 font-bold">Contact Us</Link>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

@@ -1,121 +1,51 @@
 import { MapPin, Phone } from 'lucide-react';
 import React from 'react';
-import { useSiteSettingsContext } from '~/context/SiteSettingsContext';
-import { useFooterSettings } from '~/utils/useFooterSettings';
 
 const Footer: React.FC = () => {
-  const { settings: siteSettings } = useSiteSettingsContext();
-  const { settings: footerSettings } = useFooterSettings();
-  const { contactInfo } = footerSettings;
-
-  const footerStyle: React.CSSProperties = {
-    backgroundColor: footerSettings.style.backgroundColor,
-    color: footerSettings.style.textColor,
-    borderTop: footerSettings.style.borderTop
-      ? `1px solid ${footerSettings.style.borderColor}`
-      : 'none',
-  };
-
-  const gridColsClass = {
-    2: 'md:grid-cols-2',
-    3: 'md:grid-cols-3',
-    4: 'md:grid-cols-4',
-  }[footerSettings.layout.columns] || 'md:grid-cols-4';
-
   return (
-    <footer className="pt-10" style={footerStyle}>
-      <div className={`max-w-7xl mx-auto px-4 grid grid-cols-1 ${gridColsClass} gap-10 pb-10`}>
-        {/* --- College Info --- */}
+    <footer className="bg-blue-900 text-white pt-10">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10">
+        {/* College Info */}
         <div>
-          <div className="flex items-center gap-3 mb-4">
-            <img
-              src={siteSettings.branding.footerLogo}
-              alt={siteSettings.branding.siteName}
-              className="w-16 h-16 object-contain"
-            />
-            <p className="text-sm mt-1" style={{ color: footerSettings.style.textColor }}>
-              {contactInfo.establishedYear && `Estd: ${contactInfo.establishedYear}`}
-              {contactInfo.establishedYear && contactInfo.collegeCode && ' | '}
-              {contactInfo.collegeCode && `AKTU College Code: ${contactInfo.collegeCode}`}
+          <h4 className="text-xl font-semibold mb-4">KNIT CSE Department</h4>
+          <div className="space-y-2 text-sm text-blue-100">
+            <p className="flex items-start gap-2">
+              <MapPin className="w-4 h-4 mt-0.5" />
+              <span>Kamla Nehru Institute of Technology, Sultanpur, UP - 228118</span>
             </p>
-          </div>
-
-          <div className="space-y-2 text-sm">
-            {contactInfo.address && (
-              <p className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 mt-0.5" style={{ color: footerSettings.style.textColor }} />
-                <span>{contactInfo.address}</span>
-              </p>
-            )}
-            {contactInfo.phone && (
-              <p className="flex items-center gap-2">
-                <Phone className="w-4 h-4" style={{ color: footerSettings.style.textColor }} /> {contactInfo.phone}
-              </p>
-            )}
-            {contactInfo.email && (
-              <p className="flex items-center gap-2">
-                ✉️ {contactInfo.email}
-              </p>
-            )}
+            <p className="flex items-center gap-2">
+              <Phone className="w-4 h-4" /> +91-5362-240454
+            </p>
+            <p>✉️ cse@knit.ac.in</p>
           </div>
         </div>
 
-        {/* --- Dynamic Footer Sections --- */}
-        {footerSettings.sections.map((section) => (
-          <div key={section.id}>
-            <h4
-              className="text-xl font-semibold mb-4"
-              style={{ color: footerSettings.style.headingColor }}
-            >
-              {section.title}
-            </h4>
-            <ul className="space-y-2 text-sm">
-              {section.links.map((link) => (
-                <li key={link.id}>
-                  <a
-                    href={link.href}
-                    className="hover:underline"
-                    style={{
-                      color: footerSettings.style.linkColor,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = footerSettings.style.linkHoverColor;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = footerSettings.style.linkColor;
-                    }}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {/* Quick Links */}
+        <div>
+          <h4 className="text-xl font-semibold mb-4">Quick Links</h4>
+          <ul className="space-y-2 text-sm text-blue-100">
+            <li><a href="/" className="hover:underline">Home</a></li>
+            <li><a href="/faculty" className="hover:underline">Faculty</a></li>
+            <li><a href="/courses" className="hover:underline">Courses</a></li>
+            <li><a href="/photo-gallery" className="hover:underline">Photo Gallery</a></li>
+            <li><a href="/our-alumni" className="hover:underline">Our Alumni</a></li>
+          </ul>
+        </div>
+
+        {/* About */}
+        <div>
+          <h4 className="text-xl font-semibold mb-4">About</h4>
+          <p className="text-sm text-blue-100">
+            The Department of Computer Science & Engineering at KNIT Sultanpur offers B.Tech CSE and MCA programs, dedicated to excellence in technical education and research.
+          </p>
+        </div>
       </div>
 
-      <div
-        className="py-3 text-center text-xs"
-        style={{
-          background: footerSettings.style.bottomBarBackgroundColor,
-          color: footerSettings.style.bottomBarTextColor,
-        }}
-      >
-        <p>
-          {footerSettings.copyright}
-          {footerSettings.showVisitorCount && (
-            <>
-              {' | '}
-              <span>Number of Visitors:</span> 674,695
-            </>
-          )}
+      <div className="py-3 text-center text-xs bg-blue-950 text-blue-200">
+        <p>© {new Date().getFullYear()} KNIT CSE Department. All rights reserved.</p>
+        <p className="mt-1">
+          Last Updated: {new Date().toLocaleDateString()} | {new Date().toLocaleTimeString()}
         </p>
-        {footerSettings.showLastUpdated && (
-          <p className="mt-2">
-            Last Updated On: <span>{new Date().toLocaleDateString()} | {new Date().toLocaleTimeString()}</span>
-          </p>
-        )}
-        {footerSettings.developerCredit && <p>{footerSettings.developerCredit}</p>}
       </div>
     </footer>
   );

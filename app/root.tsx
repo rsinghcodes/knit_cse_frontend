@@ -10,7 +10,9 @@ import {
 
 import type { Route } from './+types/root';
 import './app.css';
-import { SiteSettingsProvider } from './context/SiteSettingsContext';
+import { AdminAuthProvider } from './context/AdminAuthContext';
+import { EditModeProvider } from './context/EditModeContext';
+import AdminToolbar from './components/admin/AdminToolbar';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -38,9 +40,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          <SiteSettingsProvider>
-            {children}
-          </SiteSettingsProvider>
+          <AdminAuthProvider>
+            <EditModeProvider>
+              {children}
+              <AdminToolbar />
+            </EditModeProvider>
+          </AdminAuthProvider>
         </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />

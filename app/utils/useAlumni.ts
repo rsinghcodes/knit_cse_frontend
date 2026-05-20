@@ -36,21 +36,21 @@ export const useAlumni = () => {
       const added = { ...newAlumni, id: crypto.randomUUID() };
       alumniData.push(added);
     },
-    onSuccess: () => queryClient.invalidateQueries(['alumni']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alumni'] }),
   });
 
   const updateAlumni = useMutation({
     mutationFn: async (updated: Alumni) => {
       alumniData = alumniData.map((a) => (a.id === updated.id ? updated : a));
     },
-    onSuccess: () => queryClient.invalidateQueries(['alumni']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alumni'] }),
   });
 
   const deleteAlumni = useMutation({
     mutationFn: async (id: string) => {
       alumniData = alumniData.filter((a) => a.id !== id);
     },
-    onSuccess: () => queryClient.invalidateQueries(['alumni']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alumni'] }),
   });
 
   return { alumni, addAlumni, updateAlumni, deleteAlumni };
