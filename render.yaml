@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: knit-cse-frontend
+    env: docker
+    region: oregon # You can change this to your preferred region
+    plan: free # Change to starter/pro as needed
+    envVars:
+      - key: VITE_API_URL
+        sync: false # Set this in the Render dashboard to your backend URL (e.g. https://your-backend.onrender.com)
+      - key: PORT
+        value: 3000
