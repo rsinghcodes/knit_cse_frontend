@@ -12,6 +12,9 @@ FROM node:20-alpine AS build-env
 COPY . /app/
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+RUN test -n "$VITE_API_URL" || (echo "ERROR: VITE_API_URL build-arg is required for production builds." >&2; exit 1)
 RUN npm run build
 
 FROM node:20-alpine
@@ -19,4 +22,5 @@ COPY ./package.json package-lock.json /app/
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
 WORKDIR /app
+ENV HOST=0.0.0.0
 CMD ["npm", "run", "start"]
